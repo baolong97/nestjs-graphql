@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  postgres:
+    image: postgres:10.0-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PORT: 5432
+      POSTGRES_PASSWORD: 'postgres'
+    volumes:
+      - ./tables:/docker-entrypoint-initdb.d/
+      - database:/var/lib/postgresql/data
+  web:
+    image: node:12-alpine
+    command: ['npm', 'run', 'start:dev']
+    working_dir: /app
+    ports:
+      - '3001:3000'
+    volumes:
+      - .:/app
+    links:
+      - postgres
+    environment:
+      - DATABASE_HOST=postgres
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/quickstart-1549468186695-firebase-adminsdk-o9rku-817dc746c9.json
+volumes:
+  database:

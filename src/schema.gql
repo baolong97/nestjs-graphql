@@ -1,0 +1,31 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateUserInput {
+  password: String!
+  userName: String!
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+type Mutation {
+  addUser(input: CreateUserInput!): UserEntity!
+  removeUser(id: String!): Boolean!
+}
+
+type Query {
+  user(id: String!): UserEntity!
+  users: [UserEntity!]!
+}
+
+type Subscription {
+  userAdded: UserEntity!
+}
+
+type UserEntity {
+  createdAt: Date
+  id: ID!
+  userName: String
+}
