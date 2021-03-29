@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateOrderInput {
+  """Example field (placeholder)"""
+  description: String!
+}
+
 input CreateUserInput {
   password: String!
   userName: String!
@@ -17,13 +22,24 @@ type JwtAuthDto {
 
 type Mutation {
   addUser(input: CreateUserInput!): UserEntity!
+  createOrder(createOrderInput: CreateOrderInput!): Order!
   editUser(id: String!, input: UpdateUserInput!): UserEntity!
+  removeOrder(id: Int!): Order!
   removeUser(id: String!): Boolean!
   signIn(input: SignInInput!): JwtAuthDto!
   signUp(input: SignUpInput!): JwtAuthDto!
+  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
+}
+
+type Order {
+  description: String
+  id: ID!
+  user: UserEntity!
 }
 
 type Query {
+  order(id: Int!): Order!
+  orders: [Order!]!
   profile: UserEntity!
   user(id: String!): UserEntity!
   users: [UserEntity!]!
@@ -42,6 +58,12 @@ input SignUpInput {
 
 type Subscription {
   userAdded: UserEntity!
+}
+
+input UpdateOrderInput {
+  """Example field (placeholder)"""
+  description: String
+  id: Int!
 }
 
 input UpdateUserInput {

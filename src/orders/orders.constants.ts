@@ -1,0 +1,2 @@
+export const ORDER_REPOSITORY = 'ORDER_REPOSITORY';
+export const ORDER_PUB_SUB = 'ORDER_PUB_SUB';

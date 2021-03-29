@@ -4,6 +4,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserInput } from './dto/udpate-user.input';
 import { UserEntity } from './entities/user.entity';
 import { USER_REPOSITORY } from './users.constants';
+import { Queue } from 'bull';
+import { InjectQueue } from '@nestjs/bull';
 
 @Injectable()
 export class UsersService {

@@ -1,5 +1,9 @@
+import { Order } from 'src/orders/entities/order.entity';
+import { UserEntity } from 'src/users/entities/user.entity';
 import { createConnection } from 'typeorm';
-import { DEFAULT_CONNECTION, ENTITIES } from './database.constants';
+import { DEFAULT_CONNECTION } from './database.constants';
+
+export const ENTITIES = [UserEntity, Order];
 
 export const databaseProviders = [
   {

@@ -10,6 +10,10 @@ services:
     volumes:
       - ./tables:/docker-entrypoint-initdb.d/
       - database:/var/lib/postgresql/data
+  redis:
+    image: redis:6.2.1-alpine
+    ports:
+      - '6379:6379'
   web:
     image: node:12-alpine
     command: ['npm', 'run', 'start:dev']
@@ -19,9 +23,11 @@ services:
     volumes:
       - .:/app
     links:
+      - redis
       - postgres
     environment:
       - DATABASE_HOST=postgres
+      - REDIS_HOST=redis
       - GOOGLE_APPLICATION_CREDENTIALS=/app/quickstart-1549468186695-firebase-adminsdk-o9rku-817dc746c9.json
 volumes:
   database:

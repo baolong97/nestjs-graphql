@@ -4,6 +4,7 @@ import { userProviders } from './users.providers';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { UsersResolver } from './users.resolver';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [DatabaseModule],
