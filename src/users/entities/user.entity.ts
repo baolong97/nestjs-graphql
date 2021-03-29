@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 
 @ObjectType()
@@ -17,7 +18,7 @@ export class UserEntity {
 
   @Directive('@upper')
   @Field({ nullable: true, middleware: [loggerMiddleware] })
-  @Column()
+  @Column({ unique: true })
   userName: string;
 
   // @Field({ nullable: true })

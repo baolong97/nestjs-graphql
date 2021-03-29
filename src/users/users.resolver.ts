@@ -10,6 +10,7 @@ import {
 import { PubSub } from 'apollo-server-express';
 import { assertWrappingType } from 'graphql';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdateUserInput } from './dto/udpate-user.input';
 import { UserEntity } from './entities/user.entity';
 import { PUB_SUB } from './users.constants';
 import { UsersService } from './users.service';
@@ -43,6 +44,17 @@ export class UsersResolver {
     @Args('input') createUserInput: CreateUserInput,
   ): Promise<UserEntity> {
     const user = await this.usersService.create(createUserInput);
+    this.pubSub.publish('userAdded', { userAdded: user });
+    return user;
+  }
+
+  @Mutation(() => UserEntity)
+  async editUser(
+    @Args('id') id: string,
+    @Args('input') updateUserInput: UpdateUserInput,
+  ): Promise<UserEntity> {
+    console.log(id, updateUserInput);
+    const user = await this.usersService.update(id, updateUserInput);
     this.pubSub.publish('userAdded', { userAdded: user });
     return user;
   }

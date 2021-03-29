@@ -10,18 +10,43 @@ input CreateUserInput {
 """Date custom scalar type"""
 scalar Date
 
+type JwtAuthDto {
+  token: String!
+  user: UserEntity!
+}
+
 type Mutation {
   addUser(input: CreateUserInput!): UserEntity!
+  editUser(id: String!, input: UpdateUserInput!): UserEntity!
   removeUser(id: String!): Boolean!
+  signIn(input: SignInInput!): JwtAuthDto!
+  signUp(input: SignUpInput!): JwtAuthDto!
 }
 
 type Query {
+  profile: UserEntity!
   user(id: String!): UserEntity!
   users: [UserEntity!]!
 }
 
+input SignInInput {
+  password: String!
+  userName: String!
+}
+
+input SignUpInput {
+  confirmPassword: String!
+  password: String!
+  userName: String!
+}
+
 type Subscription {
   userAdded: UserEntity!
+}
+
+input UpdateUserInput {
+  password: String
+  userName: String
 }
 
 type UserEntity {

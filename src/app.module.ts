@@ -19,7 +19,7 @@ import { LoggingPlugin } from './common/plugins/logging.plugin';
       googleApplicationCredential: process.env.GOOGLE_APPLICATION_CREDENTIALS,
     }),
     GraphQLModule.forRoot({
-      debug: true,
+      debug: false,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
@@ -31,6 +31,7 @@ import { LoggingPlugin } from './common/plugins/logging.plugin';
         upper: UpperCaseDirective,
       },
       plugins: [],
+      context: ({ req }) => ({ headers: req.headers }),
     }),
     AuthModule,
     UsersModule,
