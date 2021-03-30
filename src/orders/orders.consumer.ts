@@ -1,10 +1,14 @@
-import { Processor, Process } from '@nestjs/bull';
+import { Processor, Process, OnQueueCompleted } from '@nestjs/bull';
+import { Logger } from '@nestjs/common';
 import { Job, DoneCallback } from 'bull';
 import { OrdersService } from './orders.service';
 
 @Processor('order')
 export class OrderConsumer {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private readonly ordersService: OrdersService,
+    private readonly logger: Logger,
+  ) {}
   @Process('createOrder')
   async createOrder(job: Job<any>, done: DoneCallback) {
     const order = await this.ordersService.create(
@@ -12,10 +16,11 @@ export class OrderConsumer {
       job.data.user,
     );
 
-    console.log('consumer', { order });
+    done(null, order);
+  }
 
-    done(null, 'It works');
-
-    return order;
+  @OnQueueCompleted()
+  async onCompleted(job: Job) {
+    this.logger.log(job.returnvalue);
   }
 }

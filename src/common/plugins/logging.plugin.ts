@@ -7,10 +7,10 @@ import {
 @Plugin()
 export class LoggingPlugin implements ApolloServerPlugin {
   requestDidStart(): GraphQLRequestListener {
-    console.log('Request started');
+    // console.log('Request started');
     return {
       willSendResponse(requestContext) {
-        console.log('Will send response');
+        // console.log('Will send response', requestContext);
       },
     };
   }

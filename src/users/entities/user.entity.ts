@@ -1,5 +1,6 @@
 import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 import { Exclude } from 'class-transformer';
+import { Role } from 'src/auth/enums/role.enum';
 import { loggerMiddleware } from 'src/common/middleware/logger.field.middleware';
 import { Order } from 'src/orders/entities/order.entity';
 import {
@@ -31,6 +32,15 @@ export class UserEntity {
   @Field({ nullable: true })
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
+
+  @Field((type) => [Role], { nullable: false })
+  @Column({
+    type: 'enum',
+    enum: Role,
+    array: true,
+    default: [Role.User],
+  })
+  roles: Role[];
 
   @OneToMany(() => Order, (entity) => entity.user)
   orders: Order[];

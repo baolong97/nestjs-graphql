@@ -1,5 +1,5 @@
 import { BullModule } from '@nestjs/bull';
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { DatabaseModule } from 'src/database/database.module';
 import { OrderConsumer } from './orders.consumer';
 import { orderProviders } from './orders.providers';
@@ -13,6 +13,12 @@ import { OrdersService } from './orders.service';
       name: 'order',
     }),
   ],
-  providers: [OrdersResolver, OrdersService, OrderConsumer, ...orderProviders],
+  providers: [
+    OrdersResolver,
+    OrdersService,
+    OrderConsumer,
+    Logger,
+    ...orderProviders,
+  ],
 })
 export class OrdersModule {}

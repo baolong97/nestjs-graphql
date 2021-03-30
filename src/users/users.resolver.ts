@@ -1,14 +1,11 @@
-import { Inject, NotFoundException } from '@nestjs/common';
-import {
-  Args,
-  ID,
-  Mutation,
-  Query,
-  Resolver,
-  Subscription,
-} from '@nestjs/graphql';
+import { Inject, NotFoundException, UseGuards } from '@nestjs/common';
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
-import { assertWrappingType } from 'graphql';
+import { Roles } from 'src/auth/decorator/roles.decorator';
+import { Role } from 'src/auth/enums/role.enum';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { GraphqlAuthGuard } from 'src/auth/jwt-gql-auth.guard';
+import { CurrentUser } from 'src/auth/user.decorator';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/udpate-user.input';
 import { UserEntity } from './entities/user.entity';
@@ -33,8 +30,12 @@ export class UsersResolver {
     return user;
   }
 
+  @UseGuards(RolesGuard)
+  @UseGuards(GraphqlAuthGuard)
+  @Roles(Role.User)
   @Query(() => [UserEntity])
-  async users(): Promise<UserEntity[]> {
+  async users(@CurrentUser() user): Promise<UserEntity[]> {
+    console.log({ user });
     const users = await this.usersService.findAll();
     return users;
   }

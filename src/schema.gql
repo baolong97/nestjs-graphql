@@ -45,6 +45,11 @@ type Query {
   users: [UserEntity!]!
 }
 
+enum Role {
+  Admin
+  User
+}
+
 input SignInInput {
   password: String!
   userName: String!
@@ -74,5 +79,6 @@ input UpdateUserInput {
 type UserEntity {
   createdAt: Date
   id: ID!
+  roles: [Role!]!
   userName: String
 }

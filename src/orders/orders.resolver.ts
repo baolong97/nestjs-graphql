@@ -5,7 +5,7 @@ import { CreateOrderInput } from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
 import { CurrentUser } from 'src/auth/user.decorator';
 import { GraphqlAuthGuard } from 'src/auth/jwt-gql-auth.guard';
-import { UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 
@@ -15,6 +15,7 @@ export class OrdersResolver {
     private readonly ordersService: OrdersService,
     @InjectQueue('order')
     private orderQueue: Queue,
+    private readonly logger: Logger,
   ) {}
 
   @UseGuards(GraphqlAuthGuard)
@@ -23,12 +24,7 @@ export class OrdersResolver {
     @Args('createOrderInput') createOrderInput: CreateOrderInput,
     @CurrentUser() user: any,
   ) {
-    const order = await this.orderQueue.add('createOrder', {
-      createOrderInput,
-      user,
-    });
-
-    console.log('resolver', { order: await order.isCompleted() });
+    const order = await this.ordersService.create(createOrderInput, user);
     return order;
   }
 
